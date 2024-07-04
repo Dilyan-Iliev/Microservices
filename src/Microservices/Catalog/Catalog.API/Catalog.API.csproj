@@ -18,4 +18,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\BuildingBlocks\BuildingBlocks.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -2,3 +2,8 @@
 Local Env - 5000-5050 (http-https)
 Docker Env - 6000-6060 (http-https)
 Docker Inside - 8080-8081 (http-https)
+
+The project will be organized into Models, Features, Data and Abstractions
+Features will have dedicated handlers
+Feature folder will be Products
+Data folder and Context objects manages db interactions
