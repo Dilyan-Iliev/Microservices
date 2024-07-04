@@ -1,4 +1,5 @@
 using Carter;
+using Marten;
 
 namespace Catalog.API
 {
@@ -16,6 +17,11 @@ namespace Catalog.API
             {
                 config.RegisterServicesFromAssembly(typeof(Program).Assembly);
             });
+
+            builder.Services.AddMarten(opts =>
+            {
+                opts.Connection(builder.Configuration.GetConnectionString("Database")!);
+            }).UseLightweightSessions();
 
             var app = builder.Build();
 
