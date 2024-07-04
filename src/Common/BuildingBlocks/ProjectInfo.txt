@@ -1,2 +1,2 @@
-﻿Here will be extracded commong nuget packages that will be reused by different microservices
+﻿Here will be extracted common nuget packages that will be reused from different microservices
 Also common abstractions
