@@ -8,7 +8,6 @@ namespace Catalog.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddAuthorization();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -27,7 +26,6 @@ namespace Catalog.API
             }
 
             app.MapCarter();
-
             app.Run();
         }
     }
