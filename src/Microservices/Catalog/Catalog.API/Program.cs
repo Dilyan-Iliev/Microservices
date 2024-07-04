@@ -1,3 +1,5 @@
+using Carter;
+
 namespace Catalog.API
 {
     public class Program
@@ -7,9 +9,14 @@ namespace Catalog.API
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddAuthorization();
-            //builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddCarter();
+            builder.Services.AddMediatR(config =>
+            {
+                config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+            });
 
             var app = builder.Build();
 
@@ -19,11 +26,7 @@ namespace Catalog.API
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-            //app.MapControllers();
+            app.MapCarter();
 
             app.Run();
         }

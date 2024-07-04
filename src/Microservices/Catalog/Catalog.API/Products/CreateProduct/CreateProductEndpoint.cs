@@ -14,7 +14,8 @@ namespace Catalog.API.Products.CreateProduct
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/products", async (CreateProductRequest request, ISender sender) =>
+            app.MapPost("/products",
+                async (CreateProductRequest request, ISender sender) =>
             {
                 //convert the Request into Command
                 //or we can accept directly the command as param
