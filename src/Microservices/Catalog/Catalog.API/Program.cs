@@ -1,4 +1,5 @@
 using BuildingBlocks.Behaviors;
+using BuildingBlocks.Exceptions.Handler;
 using Carter;
 using FluentValidation;
 using Marten;
@@ -19,6 +20,7 @@ namespace Catalog.API
             {
                 config.RegisterServicesFromAssembly(assembly);
                 config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                config.AddOpenBehavior(typeof(LoggingBehavior<,>));
             });
             builder.Services.AddValidatorsFromAssembly(assembly);
 
@@ -27,6 +29,8 @@ namespace Catalog.API
             {
                 opts.Connection(builder.Configuration.GetConnectionString("Database")!);
             }).UseLightweightSessions();
+
+            builder.Services.AddExceptionHandler<CustomExcetpionHandler>();
 
             var app = builder.Build();
 
@@ -37,6 +41,8 @@ namespace Catalog.API
             }
 
             app.MapCarter();
+            app.UseExceptionHandler(options => { });
+
             app.Run();
         }
     }

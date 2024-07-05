@@ -27,13 +27,10 @@ namespace Catalog.API.Products.CreateProduct
     //accepts CreateProductCommand as request type and returns CreateProductResult;
     {
         private readonly IDocumentSession _session;
-        private readonly ILogger<CreateProductCommandHandler> _logger;
 
-        public CreateProductCommandHandler(IDocumentSession session, 
-            ILogger<CreateProductCommandHandler> logger)
+        public CreateProductCommandHandler(IDocumentSession session)
         {
             _session = session;
-            _logger = logger;
         }
 
         public async Task<CreateProductResult> Handle(CreateProductCommand request,
@@ -51,7 +48,6 @@ namespace Catalog.API.Products.CreateProduct
 
             //The validation from the pipeline will be used instead upon request
 
-            _logger.LogInformation("CreateProductCommandHandler.Handle called with {@Request}", request);
 
             var product = new Product()
             {

@@ -29,25 +29,20 @@ namespace Catalog.API.Products.UpdateProduct
         : ICommandHandler<UpdateProductCommand, UpdateProductResult>
     {
         private readonly IDocumentSession _session;
-        private readonly ILogger<UpdateProductCommandHandler> _logger;
 
-        public UpdateProductCommandHandler(IDocumentSession session,
-            ILogger<UpdateProductCommandHandler> logger)
+        public UpdateProductCommandHandler(IDocumentSession session)
         {
             _session = session;
-            _logger = logger;
         }
 
         public async Task<UpdateProductResult> Handle(UpdateProductCommand request,
             CancellationToken cancellationToken)
         {
-            _logger.LogInformation("UpdateProducthandler.Handle called with {@Request}", request);
-
             var product = await _session.LoadAsync<Product>(request.Id);
 
             if (product == null)
             {
-                throw new ProductNotFoundException();
+                throw new ProductNotFoundException(request.Id);
             }
 
             product.Name = request.Name;

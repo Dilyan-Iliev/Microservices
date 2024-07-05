@@ -21,25 +21,20 @@ namespace Catalog.API.Products.DeleteProduct
         : ICommandHandler<DeleteProductCommand, DeleteProductResult>
     {
         private readonly IDocumentSession _session;
-        private readonly ILogger<DeleteProductCommandHandler> _logger;
 
-        public DeleteProductCommandHandler(IDocumentSession session, 
-            ILogger<DeleteProductCommandHandler> logger)
+        public DeleteProductCommandHandler(IDocumentSession session)
         {
             _session = session;
-            _logger = logger;
         }
 
         public async Task<DeleteProductResult> Handle(DeleteProductCommand request, 
             CancellationToken cancellationToken)
         {
-            _logger.LogInformation("DeleteProductCommandHandler.Handle called with {@Request}", request);
-
             var product = await _session.LoadAsync<Product>(request.Id);
 
             if (product == null)
             {
-                throw new ProductNotFoundException();
+                throw new ProductNotFoundException(request.Id);
             }
 
             _session.Delete<Product>(request.Id);

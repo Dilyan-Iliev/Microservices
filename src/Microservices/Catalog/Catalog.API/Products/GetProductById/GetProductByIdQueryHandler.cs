@@ -13,25 +13,20 @@ namespace Catalog.API.Products.GetProductById
         : IQueryHandler<GetProductByIdQuery, GetProductByIdResult>
     {
         private readonly IDocumentSession _session;
-        private readonly ILogger<GetProductByIdQueryHandler> _logger;
 
-        public GetProductByIdQueryHandler(IDocumentSession session, 
-            ILogger<GetProductByIdQueryHandler> logger)
+        public GetProductByIdQueryHandler(IDocumentSession session)
         {
             _session = session;
-            _logger = logger;
         }
 
         public async Task<GetProductByIdResult> Handle(GetProductByIdQuery request,
             CancellationToken cancellationToken)
         {
-            _logger.LogInformation("GetProductByIdQueryHandler.Handle called with {@Request}", request);
-
             var product = await _session.LoadAsync<Product>(request.Id, cancellationToken);
 
             if (product == null)
             {
-                throw new ProductNotFoundException();
+                throw new ProductNotFoundException(request.Id);
             }
 
             return new GetProductByIdResult(product!);
