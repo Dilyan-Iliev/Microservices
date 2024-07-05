@@ -9,17 +9,10 @@ namespace Catalog.API.Products.CreateProduct
     public record CreateProductResult(Guid Id);
 
 
-    internal class CreateProductCommandHandler
+    internal class CreateProductCommandHandler(IDocumentSession session)
         : ICommandHandler<CreateProductCommand, CreateProductResult>
     //accepts CreateProductCommand as request type and returns CreateProductResult;
     {
-        private readonly IDocumentSession _session;
-
-        internal CreateProductCommandHandler(IDocumentSession session)
-        {
-            _session = session;
-        }
-
         public async Task<CreateProductResult> Handle(CreateProductCommand request,
             CancellationToken cancellationToken)
         {
@@ -32,8 +25,8 @@ namespace Catalog.API.Products.CreateProduct
                 Price = request.Price,
             };
 
-            _session.Store(product);
-            await _session.SaveChangesAsync(cancellationToken);
+            session.Store(product);
+            await session.SaveChangesAsync(cancellationToken);
 
             return new CreateProductResult(product.Id);
         }
