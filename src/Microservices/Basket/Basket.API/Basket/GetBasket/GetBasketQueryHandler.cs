@@ -7,7 +7,7 @@ namespace Basket.API.Basket.GetBasket
     public record GetBasketResult(ShoppingCart ShoppingCart);
 
 
-    internal class GetBasketQueryHandler
+    public class GetBasketQueryHandler
         : IQueryHandler<GetBasketQuery, GetBasketResult>
     {
         public async Task<GetBasketResult> Handle(GetBasketQuery request,
