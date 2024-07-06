@@ -13,7 +13,7 @@ namespace Basket.API.Basket.StoreBasket
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/basket/{userName}",
+            app.MapPost("/basket",
                 async (ShoppingCart request, ISender sender) =>
             {
                 var command = request.Adapt<StoreBasketCommand>();
