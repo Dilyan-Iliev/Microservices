@@ -3,7 +3,9 @@ using BuildingBlocks.Exceptions.Handler;
 using Carter;
 using Catalog.API.Data;
 using FluentValidation;
+using HealthChecks.UI.Client;
 using Marten;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace Catalog.API
 {
@@ -38,6 +40,10 @@ namespace Catalog.API
 
             builder.Services.AddExceptionHandler<CustomExcetpionHandler>();
 
+            //Health check for the microservice
+            builder.Services.AddHealthChecks()
+                .AddNpgSql(builder.Configuration.GetConnectionString("Database")!); //health check for the DB as well
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -48,6 +54,12 @@ namespace Catalog.API
 
             app.MapCarter();
             app.UseExceptionHandler(options => { });
+
+            //health check status will be available on this path
+            app.UseHealthChecks("/health", new HealthCheckOptions
+            {
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
 
             app.Run();
         }
