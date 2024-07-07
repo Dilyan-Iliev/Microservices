@@ -1,0 +1,50 @@
+﻿//which services should we expose from this protobuf file ?
+
+syntax="proto3"; //we start with this - define the protobuff version we are using
+
+option csharp_namespace="Discount.Grpc"; //this is optional
+//When the protobuf file is compiled, the generated C# classes will be placed within the Discount.Grpc namespace.
+
+package discount;
+//The package declaration specifies a namespace for 
+//the protobuf file to avoid name clashes between protocol message types.
+//In this case, the package is named discount.
+
+service DiscountProtoService {
+	//These are Discount CRUD operations:
+	// - rpc keyword defines a method
+	rpc GetDiscount(GetDiscountRequest) returns (CouponModel);
+	rpc CreateDiscount(CreateDiscountRequest) returns (CouponModel);
+	rpc UpdateDiscount(UpdateDiscountRequest) returns (CouponModel);
+	rpc DeleteDiscount(DeleteDiscountRequest) returns (DeleteDiscountResponse);
+}
+
+//we can define the service request and response models after the service definition
+//in Protoc Buffers, a message is data structure that describes the info you wnt to serialize
+message GetDiscountRequest {
+	string productName = 1;
+}
+
+message CouponModel {
+	//1, 2, 3 is the order of the parameters
+	int32 id = 1;
+	string productName = 2;
+	string description = 3;
+	int32 amount = 4;
+}
+
+message CreateDiscountRequest {
+	CouponModel coupon = 1;
+}
+
+message UpdateDiscountRequest {
+	CouponModel coupon = 1;
+}
+
+message DeleteDiscountRequest {
+	string productName = 1;
+}
+
+message DeleteDiscountResponse {
+	bool success = 1;
+}
