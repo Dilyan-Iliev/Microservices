@@ -1,6 +1,7 @@
 using Basket.API.Data;
 using Basket.API.Models;
 using BuildingBlocks.Behaviors;
+using BuildingBlocks.Exceptions.Handler;
 using Carter;
 using Marten;
 
@@ -32,6 +33,7 @@ namespace Basket.API
             }).UseLightweightSessions();
 
             builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+            builder.Services.AddExceptionHandler<CustomExcetpionHandler>();
 
             var app = builder.Build();
 
@@ -42,6 +44,7 @@ namespace Basket.API
             }
 
             app.MapCarter();
+            app.UseExceptionHandler(options => { });
             app.Run();
         }
     }
