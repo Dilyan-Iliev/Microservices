@@ -1,0 +1,2 @@
+﻿When client add item into shopping cart,
+Basket microservice will consume this discount grpc service to get latest discounts on that product item
