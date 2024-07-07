@@ -3,7 +3,9 @@ using Basket.API.Models;
 using BuildingBlocks.Behaviors;
 using BuildingBlocks.Exceptions.Handler;
 using Carter;
+using HealthChecks.UI.Client;
 using Marten;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace Basket.API
 {
@@ -42,6 +44,10 @@ namespace Basket.API
 
             builder.Services.AddExceptionHandler<CustomExcetpionHandler>();
 
+            builder.Services.AddHealthChecks()
+                .AddNpgSql(builder.Configuration.GetConnectionString("Database")!)
+                .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -52,6 +58,11 @@ namespace Basket.API
 
             app.MapCarter();
             app.UseExceptionHandler(options => { });
+            app.UseHealthChecks("/health", new HealthCheckOptions
+            {
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
             app.Run();
         }
     }
