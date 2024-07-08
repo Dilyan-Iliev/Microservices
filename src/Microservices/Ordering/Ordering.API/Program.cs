@@ -1,3 +1,6 @@
+using Ordering.Application;
+using Ordering.Infrastructure;
+
 namespace Ordering.API
 {
     public class Program
@@ -8,6 +11,11 @@ namespace Ordering.API
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services
+                .AddApplicationServices()
+                .AddInfrastructureServices(builder.Configuration    )
+                .AddApiServices();
 
             var app = builder.Build();
 
