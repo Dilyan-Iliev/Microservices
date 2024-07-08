@@ -1,0 +1,2 @@
+﻿.Infrastructure will contain implementation of interfaces defined in domain and application layers
+Also code that interacts with 3rd party libraries
