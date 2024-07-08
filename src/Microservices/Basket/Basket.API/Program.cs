@@ -49,6 +49,17 @@ namespace Basket.API
             {
                 //gRPC address
                 options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+            })
+                //this option is only for development purpose
+            .ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                var handler = new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback =
+                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                };
+
+                return handler;
             });
 
             //Cross-Related Services
