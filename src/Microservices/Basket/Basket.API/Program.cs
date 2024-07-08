@@ -3,6 +3,7 @@ using Basket.API.Models;
 using BuildingBlocks.Behaviors;
 using BuildingBlocks.Exceptions.Handler;
 using Carter;
+using Discount.Grpc;
 using HealthChecks.UI.Client;
 using Marten;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -18,9 +19,9 @@ namespace Basket.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            //Application Services
             var assembly = typeof(Program).Assembly;
             builder.Services.AddCarter();
-
             builder.Services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssembly(assembly);
@@ -28,6 +29,7 @@ namespace Basket.API
                 cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
             });
 
+            //Data Services
             builder.Services.AddMarten(opts =>
             {
                 opts.Connection(builder.Configuration.GetConnectionString("Database")!);
@@ -42,6 +44,14 @@ namespace Basket.API
                 options.Configuration = builder.Configuration.GetConnectionString("Redis");
             });
 
+            //gRPC Serices
+            builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+            {
+                //gRPC address
+                options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+            });
+
+            //Cross-Related Services
             builder.Services.AddExceptionHandler<CustomExcetpionHandler>();
 
             builder.Services.AddHealthChecks()
