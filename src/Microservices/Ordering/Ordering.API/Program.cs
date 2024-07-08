@@ -1,4 +1,3 @@
-
 namespace Ordering.API
 {
     public class Program
