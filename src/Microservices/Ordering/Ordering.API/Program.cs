@@ -1,11 +1,12 @@
 using Ordering.Application;
 using Ordering.Infrastructure;
+using Ordering.Infrastructure.Data.Extensions;
 
 namespace Ordering.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +24,11 @@ namespace Ordering.API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                await app.InitialiseDatabaseAsync();
             }
 
             app.UseApiServices();
+
             app.Run();
         }
     }
