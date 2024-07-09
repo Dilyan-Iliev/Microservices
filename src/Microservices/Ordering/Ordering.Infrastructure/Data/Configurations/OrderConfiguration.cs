@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ordering.Domain.Enums;
 using Ordering.Domain.Models;
 using Ordering.Domain.ValueObjects.StrongTypeIDs;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Ordering.Infrastructure.Data.Configurations
 {
