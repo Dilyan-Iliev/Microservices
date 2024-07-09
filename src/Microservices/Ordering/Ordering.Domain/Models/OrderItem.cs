@@ -6,6 +6,7 @@ namespace Ordering.Domain.Models
     //This is entity
     public class OrderItem : Entity<OrderItemId>
     {
+        //OrderItem should only be created from the aggregate, which is order
         internal OrderItem(OrderId orderId, ProductId productId, int quantity, decimal price)
         {
             this.Id = OrderItemId.Of(Guid.NewGuid());

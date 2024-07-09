@@ -36,18 +36,53 @@ namespace Ordering.Domain.Models
         }
 
         //Richt-domain model bussiness logic
-        public void AddOrderItem(OrderItem orderItem)
+        public static Order Create(OrderId id, CustomerId customerId, OrderName orderName,
+            Address shippingAddress, Address billingAddress, Payment payment)
         {
+            var order = new Order
+            {
+                Id = id,
+                CustomerId = customerId,
+                OrderName = orderName,
+                ShippingAddress = shippingAddress,
+                BillingAddress = billingAddress,
+                Payment = payment,
+                Status = OrderStatus.Pending,
+            };
+
+            order.AddDomainEvent(new OrderCreatedEvent(order));
+
+            return order;
+        }
+
+        public void Update(OrderName orderName, Address shippingAddress, Address billingAddress,
+            Payment payment, OrderStatus status)
+        {
+            OrderName = orderName;
+            ShippingAddress = shippingAddress;
+            BillingAddress = billingAddress;
+            Payment = payment;
+            Status = status;
+
+            this.AddDomainEvent(new OrderUpdatedEvent(this));
+        }
+
+        public void Add(ProductId productId, int quantity, decimal price)
+        {
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity);
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
+
+            var orderItem = new OrderItem(this.Id, productId, quantity, price);
             _orderItems.Add(orderItem);
         }
 
-        public void RemoveOrderItem(OrderItem orderItem)
+        public void Remove(ProductId productId)
         {
-            var item = _orderItems.FirstOrDefault(item => item.Id == orderItem.Id);
+            var item = _orderItems.FirstOrDefault(item => item.ProductId == productId);
 
             if (item != null)
             {
-                _orderItems.Remove(orderItem);
+                _orderItems.Remove(item);
             }
         }
     }
