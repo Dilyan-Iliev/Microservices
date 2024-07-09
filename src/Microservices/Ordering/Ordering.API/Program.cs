@@ -14,7 +14,7 @@ namespace Ordering.API
 
             builder.Services
                 .AddApplicationServices()
-                .AddInfrastructureServices(builder.Configuration    )
+                .AddInfrastructureServices(builder.Configuration)
                 .AddApiServices();
 
             var app = builder.Build();
@@ -25,6 +25,7 @@ namespace Ordering.API
                 app.UseSwaggerUI();
             }
 
+            app.UseApiServices();
             app.Run();
         }
     }
