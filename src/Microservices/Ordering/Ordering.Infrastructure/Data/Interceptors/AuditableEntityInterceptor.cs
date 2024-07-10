@@ -5,9 +5,13 @@ using Ordering.Domain.Abstractions;
 
 namespace Ordering.Infrastructure.Data.Interceptors
 {
+    //an interceptor is used to automatically populate audit fields like CreatedBy, CreatedAt, LastModifiedBy,
+    //and LastModified before entities are saved to the database
     public class AuditableEntityInterceptor
         : SaveChangesInterceptor //this is from EFC
     {
+
+        //This method is called before SaveChanges is executed
         public override InterceptionResult<int> SavingChanges(DbContextEventData eventData,
             InterceptionResult<int> result)
         {
@@ -15,6 +19,7 @@ namespace Ordering.Infrastructure.Data.Interceptors
             return base.SavingChanges(eventData, result);
         }
 
+        //This method is called before SaveChangesAsync is executed
         public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,
             InterceptionResult<int> result, CancellationToken cancellationToken = default)
         {
