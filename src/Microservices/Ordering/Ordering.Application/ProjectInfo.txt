@@ -1,3 +1,4 @@
 ﻿.Application will be responsible for application logic
 Features folders with commands and queries
 Interfaces
+MediatR Event Handlers

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Ordering.Application.Data;
 using System.Reflection;
 
 namespace Ordering.Application
