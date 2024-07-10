@@ -51,6 +51,7 @@ namespace Ordering.Domain.Models
                 Status = OrderStatus.Pending,
             };
 
+            //rais this event
             order.AddDomainEvent(new OrderCreatedEvent(order));
 
             return order;
@@ -65,6 +66,7 @@ namespace Ordering.Domain.Models
             Payment = payment;
             Status = status;
 
+            //rais this event
             this.AddDomainEvent(new OrderUpdatedEvent(this));
         }
 
