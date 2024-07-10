@@ -10,6 +10,7 @@ namespace Ordering.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -27,6 +28,7 @@ namespace Ordering.API
                 await app.InitialiseDatabaseAsync();
             }
 
+            app.MapControllers();
             app.UseApiServices();
 
             app.Run();

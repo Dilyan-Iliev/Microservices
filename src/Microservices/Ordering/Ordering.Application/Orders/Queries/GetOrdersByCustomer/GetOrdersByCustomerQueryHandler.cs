@@ -20,15 +20,13 @@ namespace Ordering.Application.Orders.Queries.GetOrdersByCustomer
             CancellationToken cancellationToken)
         {
             var orders = await _db.Orders
-                .Include(o => o.OrderItems)
-                .AsNoTracking()
-                //.Where(o => o.CustomerId.Value == request.CustomerId)
-                .Where(o => o.CustomerId == CustomerId.Of(request.CustomerId))
-                .ToListAsync(cancellationToken);
+                        .Include(o => o.OrderItems)
+                        .AsNoTracking()
+                        .Where(o => o.CustomerId == CustomerId.Of(request.CustomerId))
+                        .OrderBy(o => o.OrderName.Value)
+                        .ToListAsync(cancellationToken);
 
-            var result = orders.ToOrderDtoCollection();
-
-            return new GetOrdersByCustomerResult(result);
+            return new GetOrdersByCustomerResult(orders.ToOrderDtoCollection());
         }
     }
 }

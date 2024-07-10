@@ -1,10 +1,8 @@
 ﻿using BuildingBlocks.CQRS;
 using Microsoft.EntityFrameworkCore;
 using Ordering.Application.Data;
-using Ordering.Application.Dtos;
 using Ordering.Application.Extensions;
 using Ordering.Application.Orders.Queries.GetOrderByName;
-using Ordering.Domain.Models;
 
 namespace Ordering.Application.Orders.Queries.GetOrdersByName
 {
@@ -25,7 +23,7 @@ namespace Ordering.Application.Orders.Queries.GetOrdersByName
                 .Include(o => o.OrderItems)
                 .AsNoTracking()
                 .Where(o => o.OrderName.Value.Contains(request.Name))
-                .OrderBy(o => o.OrderName)
+                .OrderBy(o => o.OrderName.Value)
                 .ToListAsync(cancellationToken);
 
             var result = orders.ToOrderDtoCollection();

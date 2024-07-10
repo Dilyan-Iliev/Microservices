@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Ordering.Application.Data;
 using Ordering.Application.Dtos;
 using Ordering.Application.Extensions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Ordering.Application.Orders.Queries.GetOrders
 {
@@ -20,25 +21,24 @@ namespace Ordering.Application.Orders.Queries.GetOrders
         public async Task<GetOrdersResult> Handle(GetOrdersQuery request,
             CancellationToken cancellationToken)
         {
-            var pageIndex = request.PaginationRequest.PageIndx;
+            var pageIndex = request.PaginationRequest.PageIndex;
             var pageSize = request.PaginationRequest.PageSize;
-            var totalOrdersCount = await _db.Orders
-                .LongCountAsync(cancellationToken);
+
+            var totalCount = await _db.Orders.LongCountAsync(cancellationToken);
 
             var orders = await _db.Orders
-                .Include(o => o.OrderItems)
-                .OrderBy(o => o.OrderName.Value)
-                .Skip(pageSize * pageIndex)
-                .Take(pageSize)
-                .ToListAsync();
+                           .Include(o => o.OrderItems)
+                           .OrderBy(o => o.OrderName.Value)
+                           .Skip(pageSize * pageIndex)
+                           .Take(pageSize)
+                           .ToListAsync(cancellationToken);
 
-            var result = new PaginatedResult<OrderDto>(
-                pageIndex,
-                pageSize,
-                totalOrdersCount,
-                orders.ToOrderDtoCollection());
-
-            return new GetOrdersResult(result);
+            return new GetOrdersResult(
+                new PaginatedResult<OrderDto>(
+                    pageIndex,
+                    pageSize,
+                    totalCount,
+                    orders.ToOrderDtoCollection()));
         }
     }
 }
