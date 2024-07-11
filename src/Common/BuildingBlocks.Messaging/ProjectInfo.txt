@@ -1,0 +1,3 @@
+﻿This project will be referenced by the microservices which will have async communication
+Here we will have configs of our message broker
+We will have IntegrationEvents
