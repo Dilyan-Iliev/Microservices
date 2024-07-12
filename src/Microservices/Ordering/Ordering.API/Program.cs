@@ -15,7 +15,7 @@ namespace Ordering.API
             builder.Services.AddSwaggerGen();
 
             builder.Services
-                .AddApplicationServices()
+                .AddApplicationServices(builder.Configuration)
                 .AddInfrastructureServices(builder.Configuration)
                 .AddApiServices(builder.Configuration);
 

@@ -47,7 +47,7 @@ namespace Basket.API.Basket.CheckoutBasket
             var eventMessage = request.BasketCheckoutDto.Adapt<BasketCheckoutEvent>();
             eventMessage.TotalPrice = basket.TotalPrice;
 
-            //Publish the event message
+            //Publish the event message - will be consumed by Ordering microservice
             await _publishEndpoint.Publish(eventMessage, cancellationToken);
 
             //delete existing basket from db

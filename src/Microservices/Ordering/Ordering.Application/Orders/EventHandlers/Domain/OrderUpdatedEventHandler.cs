@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Ordering.Domain.DomainEvents;
 
-namespace Ordering.Application.Orders.EventHandlers
+namespace Ordering.Application.Orders.EventHandlers.Domain
 {
     //this is consumer for the dispatched OrderUpdatedEvent from Order aggregate
     public class OrderUpdatedEventHandler
