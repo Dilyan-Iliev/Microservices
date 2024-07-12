@@ -43,7 +43,6 @@ namespace Ordering.Application.Orders.EventHandlers.Domain
 
                 //Publish OrderCreatedIntegrationEvent to RabbitMQ
                 await _publishEndpoint.Publish(orderCreatedIntegrationEvent, cancellationToken);
-                //In Feature Flag
             }
         }
     }
