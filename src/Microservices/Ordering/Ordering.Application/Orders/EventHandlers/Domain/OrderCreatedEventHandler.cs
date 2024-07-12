@@ -37,6 +37,7 @@ namespace Ordering.Application.Orders.EventHandlers.Domain
 
             //In Feature Flag
             //Map order entity to order dto
+            //Once we have consumer of this event - we will set it to true
             if (await _featureMan.IsEnabledAsync("OrderFullfilment"))
             {
                 var orderCreatedIntegrationEvent = domainEvent.Order.ToOrderDto();
