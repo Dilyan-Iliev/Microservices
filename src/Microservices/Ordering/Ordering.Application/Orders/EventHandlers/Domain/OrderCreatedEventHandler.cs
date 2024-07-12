@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Microsoft.FeatureManagement;
 using Ordering.Application.Extensions;
 using Ordering.Domain.DomainEvents;
 
@@ -15,12 +16,15 @@ namespace Ordering.Application.Orders.EventHandlers.Domain
     {
         private readonly ILogger<OrderCreatedEventHandler> _logger;
         private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IFeatureManager _featureMan;
 
         public OrderCreatedEventHandler(ILogger<OrderCreatedEventHandler> logger,
-            IPublishEndpoint publishEndpoint)
+            IPublishEndpoint publishEndpoint,
+            IFeatureManager featureMan)
         {
             _logger = logger;
             _publishEndpoint = publishEndpoint;
+            _featureMan = featureMan;
         }
 
         public async Task Handle(OrderCreatedEvent domainEvent,
@@ -31,11 +35,16 @@ namespace Ordering.Application.Orders.EventHandlers.Domain
 
             _logger.LogInformation("Domain Event handled: {DomainEvent}", domainEvent.GetType().Name);
 
+            //In Feature Flag
             //Map order entity to order dto
-            var orderCreatedIntegrationEvent = domainEvent.Order.ToOrderDto();
+            if (await _featureMan.IsEnabledAsync("OrderFullfilment"))
+            {
+                var orderCreatedIntegrationEvent = domainEvent.Order.ToOrderDto();
 
-            //Publish OrderCreatedIntegrationEvent to RabbitMQ
-            await _publishEndpoint.Publish(orderCreatedIntegrationEvent, cancellationToken);
+                //Publish OrderCreatedIntegrationEvent to RabbitMQ
+                await _publishEndpoint.Publish(orderCreatedIntegrationEvent, cancellationToken);
+                //In Feature Flag
+            }
         }
     }
 }
